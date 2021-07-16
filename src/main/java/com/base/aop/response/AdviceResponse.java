@@ -23,8 +23,11 @@ public class AdviceResponse implements ResponseBodyAdvice {
         if (o instanceof ResponseBody)
             return o;
 
+        if (o == null)
+            return new ResponseBody(ResponseStatus.SUCCESS.getStatus(), null);
+
         // 响应会默认为String格式,当为空或者String时,判断为不需要转换,ResponseBody当成String处理会报错
-        if (o == null || o instanceof String)
+        if (o instanceof String)
             return JsonUtil.toJson(new ResponseBody(ResponseStatus.SUCCESS.getStatus(), o));
 
         // Accept为application/json 统一响应格式
